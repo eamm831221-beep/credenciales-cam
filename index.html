@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generador de Credenciales C.A.M.</title>
-  <script src="https://cloudflare.com"></script>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
     .formulario { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 450px; width: 100%; }
@@ -26,8 +25,8 @@
     .foto-alumno { display: none; position: absolute; z-index: 2; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
     .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; }
     #out-nombre { top: 56.5%; left: 36%; width: 56%; }
-    #out-direccion { top: 63.0%; left: 38%; width: 54%; line-height: 1.5; font-size: 12px; }
-    #out-telefono { top: 76.5%; left: 36%; width: 56%; }
+    #out-direccion { top: 63.2%; left: 41%; width: 51%; line-height: 1.5; font-size: 12px; }
+    #out-telefono { top: 76.7%; left: 39%; width: 53%; }
 
     /* Posicionamiento Trasero */
     .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
@@ -83,15 +82,15 @@
 
       <button type="submit" id="btn-guardar">Guardar en Google Sheets</button>
       <div class="fila-botones">
-        <button type="button" class="btn-descargar" onclick="descargarUna('card-frente', 'credencial-frente.png')">Descargar Frente</button>
-        <button type="button" class="btn-descargar" onclick="descargarUna('card-reverso', 'credencial-reverso.png')">Descargar Reverso</button>
+        <button type="button" class="btn-descargar" onclick="descargarNativo('frente')">Descargar Frente</button>
+        <button type="button" class="btn-descargar" onclick="descargarNativo('reverso')">Descargar Reverso</button>
       </div>
     </form>
   </div>
   <div class="vista-previa">
     <!-- FRENTE -->
     <div class="credencial" id="card-frente">
-      <img class="fondo-credencial" src="cred_cam_frontal.jpg" alt="Frente">
+      <img id="bg-frente" class="fondo-credencial" src="cred_cam_frontal.jpg" alt="Frente">
       <img id="out-foto-alumno" class="foto-alumno" src="" alt="">
       <div id="out-nombre" class="texto-frente"></div>
       <div id="out-direccion" class="texto-frente"></div>
@@ -100,7 +99,7 @@
 
     <!-- REVERSO -->
     <div class="credencial" id="card-reverso">
-      <img class="fondo-credencial" src="cred_cam_trasera.jpg" alt="Reverso">
+      <img id="bg-reverso" class="fondo-credencial" src="cred_cam_trasera.jpg" alt="Reverso">
       <img id="out-p1-foto" class="foto-autorizado" src="" alt="">
       <div id="out-p1-nom" class="texto-autorizado"></div>
       <div id="out-p1-par" class="texto-autorizado"></div>
@@ -208,26 +207,53 @@
       .finally(() => { btn.innerText = "Guardar en Google Sheets"; btn.disabled = false; });
     });
 
-    function descargarUna(elementId, nombreArchivo) {
-      if (typeof html2canvas === 'undefined') {
-        alert("La librería de descarga aún está cargando o fue bloqueada. Recarga la página.");
-        return;
+    // Descarga nativa en Alta Definición sin depender de librerías externas
+    function descargarNativo(lado) {
+      const W = 700, H = 1260;
+      const canvas = document.createElement('canvas');
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      const bgImg = document.getElementById(lado === 'frente' ? 'bg-frente' : 'bg-reverso');
+      ctx.drawImage(bgImg, 0, 0, W, H);
+      ctx.fillStyle = '#000000';
+      ctx.textBaseline = 'top';
+
+      if (lado === 'frente') {
+        const foto = document.getElementById('out-foto-alumno');
+        if (foto.style.display !== 'none' && foto.src) {
+          ctx.drawImage(foto, W * 0.325, H * 0.275, W * 0.35, H * 0.225);
+        }
+        ctx.font = 'bold 26px Arial';
+        ctx.fillText(document.getElementById('in-nombre').value, W * 0.36, H * 0.565);
+        ctx.font = 'bold 24px Arial';
+        ctx.fillText(document.getElementById('in-direccion').value, W * 0.41, H * 0.632);
+        ctx.font = 'bold 26px Arial';
+        ctx.fillText(document.getElementById('in-telefono').value, W * 0.39, H * 0.767);
+      } else {
+        const personas = [
+          { foto: 'out-p1-foto', nom: 'in-p1-nom', par: 'in-p1-par', tel: 'in-p1-tel', yFoto: 0.245, yNom: 0.254, yPar: 0.302, yTel: 0.350 },
+          { foto: 'out-p2-foto', nom: 'in-p2-nom', par: 'in-p2-par', tel: 'in-p2-tel', yFoto: 0.445, yNom: 0.470, yPar: 0.518, yTel: 0.566 },
+          { foto: 'out-p3-foto', nom: 'in-p3-nom', par: 'in-p3-par', tel: 'in-p3-tel', yFoto: 0.645, yNom: 0.685, yPar: 0.733, yTel: 0.781 }
+        ];
+        ctx.font = 'bold 22px Arial';
+        personas.forEach(p => {
+          const foto = document.getElementById(p.foto);
+          if (foto.style.display !== 'none' && foto.src) {
+            ctx.drawImage(foto, W * 0.075, H * p.yFoto, W * 0.26, H * 0.155);
+          }
+          ctx.fillText(document.getElementById(p.nom).value, W * 0.53, H * p.yNom);
+          ctx.fillText(document.getElementById(p.par).value, W * 0.58, H * p.yPar);
+          ctx.fillText(document.getElementById(p.tel).value, W * 0.53, H * p.yTel);
+        });
       }
-      const elemento = document.getElementById(elementId);
-      html2canvas(elemento, { scale: 2, useCORS: true }).then(canvas => {
-        canvas.toBlob(function(blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.download = nombreArchivo;
-          link.href = url;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-        }, 'image/png');
-      }).catch(err => alert("Error al generar imagen: " + err));
+
+      const link = document.createElement('a');
+      link.download = lado === 'frente' ? 'credencial-frente.png' : 'credencial-reverso.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
     }
   </script>
 </body>
 </html>
-
