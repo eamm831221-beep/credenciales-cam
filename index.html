@@ -21,35 +21,36 @@
     .credencial { position: relative; width: 350px; height: 630px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; background: #fff; }
     .fondo-credencial { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
-    /* Posicionamiento Frontal */
+       /* Posicionamiento Frontal */
     .foto-alumno { display: none; position: absolute; z-index: 2; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
     .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 56.5%; left: 36%; width: 56%; }
-    #out-direccion { top: 63.2%; left: 41%; width: 51%; line-height: 1.5; font-size: 12px; }
-    #out-telefono { top: 76.7%; left: 39%; width: 53%; }
+    #out-nombre { top: 56.5%; left: 37%; width: 55%; }
+    #out-direccion { top: 63.3%; left: 43%; width: 49%; line-height: 1.5; font-size: 12px; }
+    #out-telefono { top: 77.2%; left: 41%; width: 51%; }
 
     /* Posicionamiento Trasero */
     .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
-    .texto-autorizado { position: absolute; z-index: 2; width: 42%; font-weight: bold; color: #000; font-size: 11px; }
+    .texto-autorizado { position: absolute; z-index: 2; width: 37%; font-weight: bold; color: #000; font-size: 11px; }
 
     /* Persona 1 */
     #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 25.4%; left: 53%; }
-    #out-p1-par { top: 30.2%; left: 58%; }
-    #out-p1-tel { top: 35.0%; left: 53%; }
+    #out-p1-nom { top: 26.8%; left: 58%; }
+    #out-p1-par { top: 31.6%; left: 62%; }
+    #out-p1-tel { top: 36.4%; left: 58%; }
 
     /* Persona 2 */
     #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 47.0%; left: 53%; }
-    #out-p2-par { top: 51.8%; left: 58%; }
-    #out-p2-tel { top: 56.6%; left: 53%; }
+    #out-p2-nom { top: 48.0%; left: 58%; }
+    #out-p2-par { top: 52.8%; left: 62%; }
+    #out-p2-tel { top: 57.6%; left: 58%; }
 
     /* Persona 3 */
     #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 68.5%; left: 53%; }
-    #out-p3-par { top: 73.3%; left: 58%; }
-    #out-p3-tel { top: 78.1%; left: 53%; }
+    #out-p3-nom { top: 68.8%; left: 58%; }
+    #out-p3-par { top: 73.6%; left: 62%; }
+    #out-p3-tel { top: 78.4%; left: 58%; }
   </style>
+
 </head>
 <body>
 
@@ -208,7 +209,7 @@
     });
 
     // Descarga nativa en Alta Definición sin depender de librerías externas
-    function descargarNativo(lado) {
+        function descargarNativo(lado) {
       const W = 700, H = 1260;
       const canvas = document.createElement('canvas');
       canvas.width = W;
@@ -226,16 +227,16 @@
           ctx.drawImage(foto, W * 0.325, H * 0.275, W * 0.35, H * 0.225);
         }
         ctx.font = 'bold 26px Arial';
-        ctx.fillText(document.getElementById('in-nombre').value, W * 0.36, H * 0.565);
+        ctx.fillText(document.getElementById('in-nombre').value, W * 0.37, H * 0.565);
         ctx.font = 'bold 24px Arial';
-        ctx.fillText(document.getElementById('in-direccion').value, W * 0.41, H * 0.632);
+        ctx.fillText(document.getElementById('in-direccion').value, W * 0.43, H * 0.633);
         ctx.font = 'bold 26px Arial';
-        ctx.fillText(document.getElementById('in-telefono').value, W * 0.39, H * 0.767);
+        ctx.fillText(document.getElementById('in-telefono').value, W * 0.41, H * 0.772);
       } else {
         const personas = [
-          { foto: 'out-p1-foto', nom: 'in-p1-nom', par: 'in-p1-par', tel: 'in-p1-tel', yFoto: 0.245, yNom: 0.254, yPar: 0.302, yTel: 0.350 },
-          { foto: 'out-p2-foto', nom: 'in-p2-nom', par: 'in-p2-par', tel: 'in-p2-tel', yFoto: 0.445, yNom: 0.470, yPar: 0.518, yTel: 0.566 },
-          { foto: 'out-p3-foto', nom: 'in-p3-nom', par: 'in-p3-par', tel: 'in-p3-tel', yFoto: 0.645, yNom: 0.685, yPar: 0.733, yTel: 0.781 }
+          { foto: 'out-p1-foto', nom: 'in-p1-nom', par: 'in-p1-par', tel: 'in-p1-tel', yFoto: 0.245, yNom: 0.268, yPar: 0.316, yTel: 0.364 },
+          { foto: 'out-p2-foto', nom: 'in-p2-nom', par: 'in-p2-par', tel: 'in-p2-tel', yFoto: 0.445, yNom: 0.480, yPar: 0.528, yTel: 0.576 },
+          { foto: 'out-p3-foto', nom: 'in-p3-nom', par: 'in-p3-par', tel: 'in-p3-tel', yFoto: 0.645, yNom: 0.688, yPar: 0.736, yTel: 0.784 }
         ];
         ctx.font = 'bold 22px Arial';
         personas.forEach(p => {
@@ -243,9 +244,9 @@
           if (foto.style.display !== 'none' && foto.src) {
             ctx.drawImage(foto, W * 0.075, H * p.yFoto, W * 0.26, H * 0.155);
           }
-          ctx.fillText(document.getElementById(p.nom).value, W * 0.53, H * p.yNom);
-          ctx.fillText(document.getElementById(p.par).value, W * 0.58, H * p.yPar);
-          ctx.fillText(document.getElementById(p.tel).value, W * 0.53, H * p.yTel);
+          ctx.fillText(document.getElementById(p.nom).value, W * 0.58, H * p.yNom);
+          ctx.fillText(document.getElementById(p.par).value, W * 0.62, H * p.yPar);
+          ctx.fillText(document.getElementById(p.tel).value, W * 0.58, H * p.yTel);
         });
       }
 
@@ -254,6 +255,7 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
+
   </script>
 </body>
 </html>
