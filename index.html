@@ -15,6 +15,7 @@
     button { background: #1a4f8b; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 10px; font-weight: bold; }
     button:hover { background: #133b69; }
     .btn-descargar { background: #28a745; }
+    .fila-botones { display: flex; gap: 10px; }
 
     /* Contenedores de las credenciales */
     .vista-previa { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
@@ -24,9 +25,9 @@
     /* Posicionamiento Frontal */
     .foto-alumno { display: none; position: absolute; z-index: 2; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
     .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 51.8%; left: 36%; width: 56%; }
-    #out-direccion { top: 57.5%; left: 38%; width: 54%; line-height: 1.45; font-size: 12px; }
-    #out-telefono { top: 66.2%; left: 36%; width: 56%; }
+    #out-nombre { top: 55.6%; left: 35%; width: 57%; }
+    #out-direccion { top: 61.8%; left: 37%; width: 55%; line-height: 1.5; font-size: 12px; }
+    #out-telefono { top: 75.5%; left: 36%; width: 56%; }
 
     /* Posicionamiento Trasero */
     .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
@@ -34,21 +35,21 @@
 
     /* Persona 1 */
     #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 25.0%; left: 53%; }
-    #out-p1-par { top: 29.8%; left: 58%; }
-    #out-p1-tel { top: 34.4%; left: 53%; }
+    #out-p1-nom { top: 26.2%; left: 53%; }
+    #out-p1-par { top: 31.0%; left: 58%; }
+    #out-p1-tel { top: 35.8%; left: 53%; }
 
     /* Persona 2 */
     #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 43.2%; left: 53%; }
-    #out-p2-par { top: 47.8%; left: 58%; }
-    #out-p2-tel { top: 52.4%; left: 53%; }
+    #out-p2-nom { top: 45.8%; left: 53%; }
+    #out-p2-par { top: 50.6%; left: 58%; }
+    #out-p2-tel { top: 55.4%; left: 53%; }
 
     /* Persona 3 */
     #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 61.2%; left: 53%; }
-    #out-p3-par { top: 65.8%; left: 58%; }
-    #out-p3-tel { top: 70.4%; left: 53%; }
+    #out-p3-nom { top: 65.4%; left: 53%; }
+    #out-p3-par { top: 70.2%; left: 58%; }
+    #out-p3-tel { top: 75.0%; left: 53%; }
   </style>
 </head>
 <body>
@@ -81,7 +82,10 @@
       <div class="grupo"><label>Teléfono:</label><input type="tel" id="in-p3-tel" oninput="actualizarTexto()"></div>
 
       <button type="submit" id="btn-guardar">Guardar en Google Sheets</button>
-      <button type="button" class="btn-descargar" onclick="descargarCredenciales()">Descargar Imágenes (PNG)</button>
+      <div class="fila-botones">
+        <button type="button" class="btn-descargar" onclick="descargarUna('card-frente', 'credencial-frente.png')">Descargar Frente</button>
+        <button type="button" class="btn-descargar" onclick="descargarUna('card-reverso', 'credencial-reverso.png')">Descargar Reverso</button>
+      </div>
     </form>
   </div>
   <div class="vista-previa">
@@ -130,10 +134,9 @@
       }
     }
 
-    // Comprime y convierte la foto a Base64 ligero (< 50,000 caracteres para Google Sheets)
     function configurarImagen(inputId, imgId, key) {
       document.getElementById(inputId).addEventListener('change', function(e) {
-        const file = e.target.files;
+        const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -205,21 +208,20 @@
       .finally(() => { btn.innerText = "Guardar en Google Sheets"; btn.disabled = false; });
     });
 
-    function descargarCredenciales() {
-      const f = html2canvas(document.getElementById('card-frente'), { scale: 2 });
-      const r = html2canvas(document.getElementById('card-reverso'), { scale: 2 });
-
-      Promise.all([f, r]).then(([canvasFrente, canvasReverso]) => {
-        const link1 = document.createElement('a');
-        link1.download = 'credencial-frente.png';
-        link1.href = canvasFrente.toDataURL('image/png');
-        link1.click();
-
-        const link2 = document.createElement('a');
-        link2.download = 'credencial-reverso.png';
-        link2.href = canvasReverso.toDataURL('image/png');
-        link2.click();
-      });
+    function descargarUna(elementId, nombreArchivo) {
+      const elemento = document.getElementById(elementId);
+      html2canvas(elemento, { scale: 2, useCORS: true }).then(canvas => {
+        canvas.toBlob(function(blob) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.download = nombreArchivo;
+          link.href = url;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      }).catch(err => alert("Error al generar imagen: " + err));
     }
   </script>
 </body>
