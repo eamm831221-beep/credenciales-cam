@@ -25,9 +25,9 @@
     /* Posicionamiento Frontal */
     .foto-alumno { display: none; position: absolute; z-index: 2; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
     .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 55.6%; left: 35%; width: 57%; }
-    #out-direccion { top: 61.8%; left: 37%; width: 55%; line-height: 1.5; font-size: 12px; }
-    #out-telefono { top: 75.5%; left: 36%; width: 56%; }
+    #out-nombre { top: 56.5%; left: 36%; width: 56%; }
+    #out-direccion { top: 63.0%; left: 38%; width: 54%; line-height: 1.5; font-size: 12px; }
+    #out-telefono { top: 76.5%; left: 36%; width: 56%; }
 
     /* Posicionamiento Trasero */
     .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
@@ -35,21 +35,21 @@
 
     /* Persona 1 */
     #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 26.2%; left: 53%; }
-    #out-p1-par { top: 31.0%; left: 58%; }
-    #out-p1-tel { top: 35.8%; left: 53%; }
+    #out-p1-nom { top: 25.4%; left: 53%; }
+    #out-p1-par { top: 30.2%; left: 58%; }
+    #out-p1-tel { top: 35.0%; left: 53%; }
 
     /* Persona 2 */
     #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 45.8%; left: 53%; }
-    #out-p2-par { top: 50.6%; left: 58%; }
-    #out-p2-tel { top: 55.4%; left: 53%; }
+    #out-p2-nom { top: 47.0%; left: 53%; }
+    #out-p2-par { top: 51.8%; left: 58%; }
+    #out-p2-tel { top: 56.6%; left: 53%; }
 
     /* Persona 3 */
     #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 65.4%; left: 53%; }
-    #out-p3-par { top: 70.2%; left: 58%; }
-    #out-p3-tel { top: 75.0%; left: 53%; }
+    #out-p3-nom { top: 68.5%; left: 53%; }
+    #out-p3-par { top: 73.3%; left: 58%; }
+    #out-p3-tel { top: 78.1%; left: 53%; }
   </style>
 </head>
 <body>
@@ -119,7 +119,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZfdLcMyuek64_vIjnB4LYb1sfG-SovvYYWqo1mT67tkdGOzo337lOIIR_yE05Uaka/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybNZS8R7aTHTvfyb7ewz6TvyxYib6xLa6BF8iJrT8AQZMBVWg9iSyR2tLguBFLL21L/exec";
     let base64Images = { alumno: "", p1: "", p2: "", p3: "" };
 
     function actualizarTexto() {
@@ -209,6 +209,10 @@
     });
 
     function descargarUna(elementId, nombreArchivo) {
+      if (typeof html2canvas === 'undefined') {
+        alert("La librería de descarga aún está cargando o fue bloqueada. Recarga la página.");
+        return;
+      }
       const elemento = document.getElementById(elementId);
       html2canvas(elemento, { scale: 2, useCORS: true }).then(canvas => {
         canvas.toBlob(function(blob) {
