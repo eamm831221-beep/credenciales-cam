@@ -23,35 +23,36 @@
     #card-reverso { background-image: url('cred_cam_trasera.jpg'); }
 
 
-    /* Posicionamiento Frontal */
-    .foto-alumno { position: absolute; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
+       /* Posicionamiento Frontal */
+    .foto-alumno { display: none; position: absolute; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
     .texto-frente { position: absolute; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 55.2%; left: 32%; width: 60%; }
-    #out-direccion { top: 61.8%; left: 34%; width: 58%; line-height: 1.55; font-size: 12px; }
-    #out-telefono { top: 73.5%; left: 33%; width: 58%; }
+    #out-nombre { top: 55.5%; left: 34%; width: 58%; }
+    #out-direccion { top: 62.2%; left: 36%; width: 56%; line-height: 1.5; font-size: 12px; }
+    #out-telefono { top: 75.8%; left: 35%; width: 56%; }
 
     /* Posicionamiento Trasero */
-    .foto-autorizado { position: absolute; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
-    .texto-autorizado { position: absolute; left: 53%; width: 40%; font-weight: bold; color: #000; font-size: 11px; }
+    .foto-autorizado { display: none; position: absolute; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
+    .texto-autorizado { position: absolute; width: 42%; font-weight: bold; color: #000; font-size: 11px; }
 
     /* Persona 1 */
     #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 25.5%; }
-    #out-p1-par { top: 30.2%; left: 57%; }
-    #out-p1-tel { top: 34.8%; left: 53%; }
+    #out-p1-nom { top: 26.8%; left: 53%; }
+    #out-p1-par { top: 31.8%; left: 58%; }
+    #out-p1-tel { top: 36.8%; left: 53%; }
 
     /* Persona 2 */
     #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 45.5%; }
-    #out-p2-par { top: 50.2%; left: 57%; }
-    #out-p2-tel { top: 54.8%; left: 53%; }
+    #out-p2-nom { top: 46.8%; left: 53%; }
+    #out-p2-par { top: 51.8%; left: 58%; }
+    #out-p2-tel { top: 56.8%; left: 53%; }
 
     /* Persona 3 */
     #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 65.5%; }
-    #out-p3-par { top: 70.2%; left: 57%; }
-    #out-p3-tel { top: 74.8%; left: 53%; }
+    #out-p3-nom { top: 66.8%; left: 53%; }
+    #out-p3-par { top: 71.8%; left: 58%; }
+    #out-p3-tel { top: 76.8%; left: 53%; }
   </style>
+
 </head>
 <body>
 
@@ -115,7 +116,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-uw40EfIq5BxjXsWJzQ45DXgicRkdf1Kftag5XX-MtBJw9QdCCKOffzcNPG72ipUP/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqPUAMoBPToH5AFKUcvvyyMsSCW_g2hrDiMGZKCcHVYnldSLhnWFgGDCKpCmbUN7bL/exec";
     let base64Images = { alumno: "", p1: "", p2: "", p3: "" };
 
     function actualizarTexto() {
@@ -173,29 +174,41 @@
         p3_foto: base64Images.p3
       };
 
-      fetch(SCRIPT_URL, {
+           fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-      .then(res => alert("¡Datos y fotos guardados en Google Sheets!"))
+      .then(() => {
+        alert("¡Enviado! Revisa tu hoja de Google Sheets en unos segundos.");
+      })
       .catch(err => alert("Error al guardar: " + err))
       .finally(() => { btn.innerText = "Guardar en Google Sheets"; btn.disabled = false; });
     });
 
     function descargarCredenciales() {
-      html2canvas(document.getElementById('card-frente'), { scale: 2 }).then(canvas => {
+      html2canvas(document.getElementById('card-frente'), { scale: 2, useCORS: true }).then(canvas => {
         let link = document.createElement('a');
         link.download = 'credencial-frente.png';
-        link.href = canvas.toDataURL();
+        link.href = canvas.toDataURL('image/png');
+        document.body.appendChild(link);
         link.click();
-      });
-      html2canvas(document.getElementById('card-reverso'), { scale: 2 }).then(canvas => {
-        let link = document.createElement('a');
-        link.download = 'credencial-reverso.png';
-        link.href = canvas.toDataURL();
-        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => {
+          html2canvas(document.getElementById('card-reverso'), { scale: 2, useCORS: true }).then(canvas2 => {
+            let link2 = document.createElement('a');
+            link2.download = 'credencial-reverso.png';
+            link2.href = canvas2.toDataURL('image/png');
+            document.body.appendChild(link2);
+            link2.click();
+            document.body.removeChild(link2);
+          });
+        }, 600);
       });
     }
+
   </script>
 </body>
 </html>
