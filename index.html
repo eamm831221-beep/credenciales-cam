@@ -18,39 +18,38 @@
 
     /* Contenedores de las credenciales */
     .vista-previa { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .credencial { position: relative; width: 350px; height: 630px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; background: #fff; }
+    .credencial { position: relative; width: 350px; height: 495px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; background: #fff; }
     .fondo-credencial { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
-       /* Posicionamiento Frontal */
-    .foto-alumno { display: none; position: absolute; z-index: 2; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
-    .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 56.5%; left: 37%; width: 55%; }
-    #out-direccion { top: 63.3%; left: 43%; width: 49%; line-height: 1.5; font-size: 12px; }
-    #out-telefono { top: 77.2%; left: 41%; width: 51%; }
+    /* Posicionamiento Frontal */
+    .foto-alumno { display: none; position: absolute; z-index: 2; top: 28.8%; left: 38.2%; width: 23.6%; height: 24.4%; object-fit: cover; border-radius: 6px; }
+    .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; text-align: center; display: flex; align-items: center; justify-content: center; word-wrap: break-word; }
+    #out-nombre { top: 56.2%; left: 37%; width: 54%; height: 4.8%; font-size: 15px; }
+    #out-direccion { top: 65.5%; left: 20%; width: 71%; height: 8.5%; font-size: 14px; line-height: 1.25; }
+    #out-telefono { top: 76.2%; left: 39%; width: 52%; height: 4.8%; font-size: 15px; }
 
     /* Posicionamiento Trasero */
-    .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
-    .texto-autorizado { position: absolute; z-index: 2; width: 37%; font-weight: bold; color: #000; font-size: 11px; }
+    .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 22.2%; height: 15.8%; object-fit: cover; border-radius: 10px; }
+    .texto-autorizado { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; text-align: center; display: flex; align-items: center; justify-content: center; }
 
     /* Persona 1 */
-    #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 26.8%; left: 58%; }
-    #out-p1-par { top: 31.6%; left: 62%; }
-    #out-p1-tel { top: 36.4%; left: 58%; }
+    #out-p1-foto { top: 28.8%; }
+    #out-p1-nom { top: 29.8%; left: 48%; width: 43%; height: 3.6%; }
+    #out-p1-par { top: 34.8%; left: 53%; width: 38%; height: 3.6%; }
+    #out-p1-tel { top: 39.8%; left: 49%; width: 42%; height: 3.6%; }
 
     /* Persona 2 */
-    #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 48.0%; left: 58%; }
-    #out-p2-par { top: 52.8%; left: 62%; }
-    #out-p2-tel { top: 57.6%; left: 58%; }
+    #out-p2-foto { top: 47.4%; }
+    #out-p2-nom { top: 48.4%; left: 48%; width: 43%; height: 3.6%; }
+    #out-p2-par { top: 53.4%; left: 53%; width: 38%; height: 3.6%; }
+    #out-p2-tel { top: 58.4%; left: 49%; width: 42%; height: 3.6%; }
 
     /* Persona 3 */
-    #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 68.8%; left: 58%; }
-    #out-p3-par { top: 73.6%; left: 62%; }
-    #out-p3-tel { top: 78.4%; left: 58%; }
+    #out-p3-foto { top: 66.0%; }
+    #out-p3-nom { top: 67.0%; left: 48%; width: 43%; height: 3.6%; }
+    #out-p3-par { top: 72.0%; left: 53%; width: 38%; height: 3.6%; }
+    #out-p3-tel { top: 77.0%; left: 49%; width: 42%; height: 3.6%; }
   </style>
-
 </head>
 <body>
 
@@ -91,7 +90,7 @@
   <div class="vista-previa">
     <!-- FRENTE -->
     <div class="credencial" id="card-frente">
-      <img id="bg-frente" class="fondo-credencial" src="cred_cam_frontal.jpg" alt="Frente">
+      <img id="bg-frente" class="fondo-credencial" src="cred_frontal.jpg" alt="Frente">
       <img id="out-foto-alumno" class="foto-alumno" src="" alt="">
       <div id="out-nombre" class="texto-frente"></div>
       <div id="out-direccion" class="texto-frente"></div>
@@ -100,7 +99,7 @@
 
     <!-- REVERSO -->
     <div class="credencial" id="card-reverso">
-      <img id="bg-reverso" class="fondo-credencial" src="cred_cam_trasera.jpg" alt="Reverso">
+      <img id="bg-reverso" class="fondo-credencial" src="cred_trasera.jpg" alt="Reverso">
       <img id="out-p1-foto" class="foto-autorizado" src="" alt="">
       <div id="out-p1-nom" class="texto-autorizado"></div>
       <div id="out-p1-par" class="texto-autorizado"></div>
@@ -208,9 +207,28 @@
       .finally(() => { btn.innerText = "Guardar en Google Sheets"; btn.disabled = false; });
     });
 
-    // Descarga nativa en Alta Definición sin depender de librerías externas
-        function descargarNativo(lado) {
-      const W = 700, H = 1260;
+    function dibujarTextoMultilinea(ctx, texto, x, y, maxWidth, lineHeight) {
+      const palabras = texto.split(' ');
+      let linea = '';
+      let lineas = [];
+      for (let n = 0; n < palabras.length; n++) {
+        let prueba = linea + palabras[n] + ' ';
+        if (ctx.measureText(prueba).width > maxWidth && n > 0) {
+          lineas.push(linea.trim());
+          linea = palabras[n] + ' ';
+        } else {
+          linea = prueba;
+        }
+      }
+      lineas.push(linea.trim());
+      const offsetInicial = ((lineas.length - 1) * lineHeight) / 2;
+      lineas.forEach((l, i) => {
+        ctx.fillText(l, x, y - offsetInicial + (i * lineHeight));
+      });
+    }
+
+    function descargarNativo(lado) {
+      const W = 700, H = 990;
       const canvas = document.createElement('canvas');
       canvas.width = W;
       canvas.height = H;
@@ -219,34 +237,37 @@
       const bgImg = document.getElementById(lado === 'frente' ? 'bg-frente' : 'bg-reverso');
       ctx.drawImage(bgImg, 0, 0, W, H);
       ctx.fillStyle = '#000000';
-      ctx.textBaseline = 'top';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
       if (lado === 'frente') {
         const foto = document.getElementById('out-foto-alumno');
         if (foto.style.display !== 'none' && foto.src) {
-          ctx.drawImage(foto, W * 0.325, H * 0.275, W * 0.35, H * 0.225);
+          ctx.drawImage(foto, W * 0.382, H * 0.288, W * 0.236, H * 0.244);
         }
-        ctx.font = 'bold 26px Arial';
-        ctx.fillText(document.getElementById('in-nombre').value, W * 0.37, H * 0.565);
-        ctx.font = 'bold 24px Arial';
-        ctx.fillText(document.getElementById('in-direccion').value, W * 0.43, H * 0.633);
-        ctx.font = 'bold 26px Arial';
-        ctx.fillText(document.getElementById('in-telefono').value, W * 0.41, H * 0.772);
+        ctx.font = 'bold 30px Arial';
+        ctx.fillText(document.getElementById('in-nombre').value, W * 0.64, H * 0.586);
+        
+        ctx.font = 'bold 28px Arial';
+        dibujarTextoMultilinea(ctx, document.getElementById('in-direccion').value, W * 0.555, H * 0.697, W * 0.68, 34);
+        
+        ctx.font = 'bold 30px Arial';
+        ctx.fillText(document.getElementById('in-telefono').value, W * 0.65, H * 0.786);
       } else {
         const personas = [
-          { foto: 'out-p1-foto', nom: 'in-p1-nom', par: 'in-p1-par', tel: 'in-p1-tel', yFoto: 0.245, yNom: 0.268, yPar: 0.316, yTel: 0.364 },
-          { foto: 'out-p2-foto', nom: 'in-p2-nom', par: 'in-p2-par', tel: 'in-p2-tel', yFoto: 0.445, yNom: 0.480, yPar: 0.528, yTel: 0.576 },
-          { foto: 'out-p3-foto', nom: 'in-p3-nom', par: 'in-p3-par', tel: 'in-p3-tel', yFoto: 0.645, yNom: 0.688, yPar: 0.736, yTel: 0.784 }
+          { foto: 'out-p1-foto', nom: 'in-p1-nom', par: 'in-p1-par', tel: 'in-p1-tel', yFoto: 0.288, yNom: 0.316, yPar: 0.366, yTel: 0.416 },
+          { foto: 'out-p2-foto', nom: 'in-p2-nom', par: 'in-p2-par', tel: 'in-p2-tel', yFoto: 0.474, yNom: 0.502, yPar: 0.552, yTel: 0.602 },
+          { foto: 'out-p3-foto', nom: 'in-p3-nom', par: 'in-p3-par', tel: 'in-p3-tel', yFoto: 0.660, yNom: 0.688, yPar: 0.738, yTel: 0.788 }
         ];
-        ctx.font = 'bold 22px Arial';
+        ctx.font = 'bold 26px Arial';
         personas.forEach(p => {
           const foto = document.getElementById(p.foto);
           if (foto.style.display !== 'none' && foto.src) {
-            ctx.drawImage(foto, W * 0.075, H * p.yFoto, W * 0.26, H * 0.155);
+            ctx.drawImage(foto, W * 0.075, H * p.yFoto, W * 0.222, H * 0.158);
           }
-          ctx.fillText(document.getElementById(p.nom).value, W * 0.58, H * p.yNom);
-          ctx.fillText(document.getElementById(p.par).value, W * 0.62, H * p.yPar);
-          ctx.fillText(document.getElementById(p.tel).value, W * 0.58, H * p.yTel);
+          ctx.fillText(document.getElementById(p.nom).value, W * 0.695, H * p.yNom);
+          ctx.fillText(document.getElementById(p.par).value, W * 0.720, H * p.yPar);
+          ctx.fillText(document.getElementById(p.tel).value, W * 0.700, H * p.yTel);
         });
       }
 
@@ -255,7 +276,6 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
-
   </script>
 </body>
 </html>
