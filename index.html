@@ -19,16 +19,15 @@
     /* Contenedores de las credenciales */
     .vista-previa { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
     .credencial { position: relative; width: 350px; height: 630px; background-size: cover; background-position: center; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; }
-       #card-frente { background-image: url('cred_cam_frontal.jpg'); }
+    #card-frente { background-image: url('cred_cam_frontal.jpg'); }
     #card-reverso { background-image: url('cred_cam_trasera.jpg'); }
 
-
-       /* Posicionamiento Frontal */
+    /* Posicionamiento Frontal */
     .foto-alumno { display: none; position: absolute; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
     .texto-frente { position: absolute; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 55.5%; left: 34%; width: 58%; }
-    #out-direccion { top: 62.2%; left: 36%; width: 56%; line-height: 1.5; font-size: 12px; }
-    #out-telefono { top: 75.8%; left: 35%; width: 56%; }
+    #out-nombre { top: 55.8%; left: 34%; width: 58%; }
+    #out-direccion { top: 62.6%; left: 36%; width: 56%; line-height: 1.5; font-size: 12px; }
+    #out-telefono { top: 76.2%; left: 35%; width: 56%; }
 
     /* Posicionamiento Trasero */
     .foto-autorizado { display: none; position: absolute; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
@@ -36,23 +35,22 @@
 
     /* Persona 1 */
     #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 26.8%; left: 53%; }
-    #out-p1-par { top: 31.8%; left: 58%; }
-    #out-p1-tel { top: 36.8%; left: 53%; }
+    #out-p1-nom { top: 26.2%; left: 53%; }
+    #out-p1-par { top: 31.2%; left: 58%; }
+    #out-p1-tel { top: 36.2%; left: 53%; }
 
     /* Persona 2 */
     #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 46.8%; left: 53%; }
-    #out-p2-par { top: 51.8%; left: 58%; }
-    #out-p2-tel { top: 56.8%; left: 53%; }
+    #out-p2-nom { top: 46.2%; left: 53%; }
+    #out-p2-par { top: 51.2%; left: 58%; }
+    #out-p2-tel { top: 56.2%; left: 53%; }
 
     /* Persona 3 */
     #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 66.8%; left: 53%; }
-    #out-p3-par { top: 71.8%; left: 58%; }
-    #out-p3-tel { top: 76.8%; left: 53%; }
+    #out-p3-nom { top: 66.2%; left: 53%; }
+    #out-p3-par { top: 71.2%; left: 58%; }
+    #out-p3-tel { top: 76.2%; left: 53%; }
   </style>
-
 </head>
 <body>
 
@@ -116,7 +114,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqPUAMoBPToH5AFKUcvvyyMsSCW_g2hrDiMGZKCcHVYnldSLhnWFgGDCKpCmbUN7bL/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxX8xHBa9Ebyc29PJGE0ss744HQ6Los5Gkx137h0OnaoQE6BXl1pg2pnMa3emWdirPX/exec";
     let base64Images = { alumno: "", p1: "", p2: "", p3: "" };
 
     function actualizarTexto() {
@@ -137,7 +135,9 @@
         if (!file) return;
         const reader = new FileReader();
         reader.onload = function(event) {
-          document.getElementById(imgId).src = event.target.result;
+          const img = document.getElementById(imgId);
+          img.src = event.target.result;
+          img.style.display = 'block';
           base64Images[key] = event.target.result;
         };
         reader.readAsDataURL(file);
@@ -174,7 +174,7 @@
         p3_foto: base64Images.p3
       };
 
-           fetch(SCRIPT_URL, {
+      fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -208,7 +208,7 @@
         }, 600);
       });
     }
-
   </script>
 </body>
 </html>
+
