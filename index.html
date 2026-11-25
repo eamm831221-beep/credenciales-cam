@@ -18,38 +18,37 @@
 
     /* Contenedores de las credenciales */
     .vista-previa { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .credencial { position: relative; width: 350px; height: 630px; background-size: cover; background-position: center; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; }
-    #card-frente { background-image: url('cred_cam_frontal.jpg'); }
-    #card-reverso { background-image: url('cred_cam_trasera.jpg'); }
+    .credencial { position: relative; width: 350px; height: 630px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; background: #fff; }
+    .fondo-credencial { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
     /* Posicionamiento Frontal */
-    .foto-alumno { display: none; position: absolute; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
-    .texto-frente { position: absolute; font-weight: bold; color: #000; font-size: 13px; }
-    #out-nombre { top: 55.8%; left: 34%; width: 58%; }
-    #out-direccion { top: 62.6%; left: 36%; width: 56%; line-height: 1.5; font-size: 12px; }
-    #out-telefono { top: 76.2%; left: 35%; width: 56%; }
+    .foto-alumno { display: none; position: absolute; z-index: 2; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
+    .texto-frente { position: absolute; z-index: 2; font-weight: bold; color: #000; font-size: 13px; }
+    #out-nombre { top: 51.8%; left: 36%; width: 56%; }
+    #out-direccion { top: 57.5%; left: 38%; width: 54%; line-height: 1.45; font-size: 12px; }
+    #out-telefono { top: 66.2%; left: 36%; width: 56%; }
 
     /* Posicionamiento Trasero */
-    .foto-autorizado { display: none; position: absolute; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
-    .texto-autorizado { position: absolute; width: 42%; font-weight: bold; color: #000; font-size: 11px; }
+    .foto-autorizado { display: none; position: absolute; z-index: 2; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
+    .texto-autorizado { position: absolute; z-index: 2; width: 42%; font-weight: bold; color: #000; font-size: 11px; }
 
     /* Persona 1 */
     #out-p1-foto { top: 24.5%; }
-    #out-p1-nom { top: 26.2%; left: 53%; }
-    #out-p1-par { top: 31.2%; left: 58%; }
-    #out-p1-tel { top: 36.2%; left: 53%; }
+    #out-p1-nom { top: 25.0%; left: 53%; }
+    #out-p1-par { top: 29.8%; left: 58%; }
+    #out-p1-tel { top: 34.4%; left: 53%; }
 
     /* Persona 2 */
     #out-p2-foto { top: 44.5%; }
-    #out-p2-nom { top: 46.2%; left: 53%; }
-    #out-p2-par { top: 51.2%; left: 58%; }
-    #out-p2-tel { top: 56.2%; left: 53%; }
+    #out-p2-nom { top: 43.2%; left: 53%; }
+    #out-p2-par { top: 47.8%; left: 58%; }
+    #out-p2-tel { top: 52.4%; left: 53%; }
 
     /* Persona 3 */
     #out-p3-foto { top: 64.5%; }
-    #out-p3-nom { top: 66.2%; left: 53%; }
-    #out-p3-par { top: 71.2%; left: 58%; }
-    #out-p3-tel { top: 76.2%; left: 53%; }
+    #out-p3-nom { top: 61.2%; left: 53%; }
+    #out-p3-par { top: 65.8%; left: 58%; }
+    #out-p3-tel { top: 70.4%; left: 53%; }
   </style>
 </head>
 <body>
@@ -88,6 +87,7 @@
   <div class="vista-previa">
     <!-- FRENTE -->
     <div class="credencial" id="card-frente">
+      <img class="fondo-credencial" src="cred_cam_frontal.jpg" alt="Frente">
       <img id="out-foto-alumno" class="foto-alumno" src="" alt="">
       <div id="out-nombre" class="texto-frente"></div>
       <div id="out-direccion" class="texto-frente"></div>
@@ -96,6 +96,7 @@
 
     <!-- REVERSO -->
     <div class="credencial" id="card-reverso">
+      <img class="fondo-credencial" src="cred_cam_trasera.jpg" alt="Reverso">
       <img id="out-p1-foto" class="foto-autorizado" src="" alt="">
       <div id="out-p1-nom" class="texto-autorizado"></div>
       <div id="out-p1-par" class="texto-autorizado"></div>
@@ -114,7 +115,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxX8xHBa9Ebyc29PJGE0ss744HQ6Los5Gkx137h0OnaoQE6BXl1pg2pnMa3emWdirPX/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZfdLcMyuek64_vIjnB4LYb1sfG-SovvYYWqo1mT67tkdGOzo337lOIIR_yE05Uaka/exec";
     let base64Images = { alumno: "", p1: "", p2: "", p3: "" };
 
     function actualizarTexto() {
@@ -129,16 +130,33 @@
       }
     }
 
+    // Comprime y convierte la foto a Base64 ligero (< 50,000 caracteres para Google Sheets)
     function configurarImagen(inputId, imgId, key) {
       document.getElementById(inputId).addEventListener('change', function(e) {
-        const file = e.target.files[0];
+        const file = e.target.files;
         if (!file) return;
         const reader = new FileReader();
         reader.onload = function(event) {
-          const img = document.getElementById(imgId);
-          img.src = event.target.result;
-          img.style.display = 'block';
-          base64Images[key] = event.target.result;
+          const tempImg = new Image();
+          tempImg.onload = function() {
+            const canvas = document.createElement('canvas');
+            const maxDim = 250;
+            let w = tempImg.width;
+            let h = tempImg.height;
+            if (w > h) { if (w > maxDim) { h *= maxDim / w; w = maxDim; } }
+            else { if (h > maxDim) { w *= maxDim / h; h = maxDim; } }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(tempImg, 0, 0, w, h);
+            
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            const img = document.getElementById(imgId);
+            img.src = compressedBase64;
+            img.style.display = 'block';
+            base64Images[key] = compressedBase64;
+          };
+          tempImg.src = event.target.result;
         };
         reader.readAsDataURL(file);
       });
@@ -181,31 +199,26 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        alert("¡Enviado! Revisa tu hoja de Google Sheets en unos segundos.");
+        alert("¡Datos y fotos en Base64 guardados en Google Sheets!");
       })
       .catch(err => alert("Error al guardar: " + err))
       .finally(() => { btn.innerText = "Guardar en Google Sheets"; btn.disabled = false; });
     });
 
     function descargarCredenciales() {
-      html2canvas(document.getElementById('card-frente'), { scale: 2, useCORS: true }).then(canvas => {
-        let link = document.createElement('a');
-        link.download = 'credencial-frente.png';
-        link.href = canvas.toDataURL('image/png');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const f = html2canvas(document.getElementById('card-frente'), { scale: 2 });
+      const r = html2canvas(document.getElementById('card-reverso'), { scale: 2 });
 
-        setTimeout(() => {
-          html2canvas(document.getElementById('card-reverso'), { scale: 2, useCORS: true }).then(canvas2 => {
-            let link2 = document.createElement('a');
-            link2.download = 'credencial-reverso.png';
-            link2.href = canvas2.toDataURL('image/png');
-            document.body.appendChild(link2);
-            link2.click();
-            document.body.removeChild(link2);
-          });
-        }, 600);
+      Promise.all([f, r]).then(([canvasFrente, canvasReverso]) => {
+        const link1 = document.createElement('a');
+        link1.download = 'credencial-frente.png';
+        link1.href = canvasFrente.toDataURL('image/png');
+        link1.click();
+
+        const link2 = document.createElement('a');
+        link2.download = 'credencial-reverso.png';
+        link2.href = canvasReverso.toDataURL('image/png');
+        link2.click();
       });
     }
   </script>
