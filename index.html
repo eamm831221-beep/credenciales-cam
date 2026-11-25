@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Credenciales C.A.M.</title>
+  <script src="https://cloudflare.com"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+    .formulario { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 450px; width: 100%; }
+    h2, h3 { color: #1a4f8b; margin-top: 0; }
+    .grupo { margin-bottom: 12px; }
+    label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+    input[type="text"], input[type="tel"], input[type="file"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    button { background: #1a4f8b; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+    button:hover { background: #133b69; }
+    .btn-descargar { background: #28a745; }
+
+    /* Contenedores de las credenciales */
+    .vista-previa { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .credencial { position: relative; width: 350px; height: 630px; background-size: cover; background-position: center; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); overflow: hidden; }
+    #card-frente { background-image: url('frente.png'); }
+    #card-reverso { background-image: url('reverso.png'); }
+
+    /* Posicionamiento Frontal */
+    .foto-alumno { position: absolute; top: 27.5%; left: 32.5%; width: 35%; height: 22.5%; object-fit: cover; border-radius: 8px; }
+    .texto-frente { position: absolute; font-weight: bold; color: #000; font-size: 13px; }
+    #out-nombre { top: 55.2%; left: 32%; width: 60%; }
+    #out-direccion { top: 61.8%; left: 34%; width: 58%; line-height: 1.55; font-size: 12px; }
+    #out-telefono { top: 73.5%; left: 33%; width: 58%; }
+
+    /* Posicionamiento Trasero */
+    .foto-autorizado { position: absolute; left: 7.5%; width: 26%; height: 15.5%; object-fit: cover; border-radius: 8px; }
+    .texto-autorizado { position: absolute; left: 53%; width: 40%; font-weight: bold; color: #000; font-size: 11px; }
+
+    /* Persona 1 */
+    #out-p1-foto { top: 24.5%; }
+    #out-p1-nom { top: 25.5%; }
+    #out-p1-par { top: 30.2%; left: 57%; }
+    #out-p1-tel { top: 34.8%; left: 53%; }
+
+    /* Persona 2 */
+    #out-p2-foto { top: 44.5%; }
+    #out-p2-nom { top: 45.5%; }
+    #out-p2-par { top: 50.2%; left: 57%; }
+    #out-p2-tel { top: 54.8%; left: 53%; }
+
+    /* Persona 3 */
+    #out-p3-foto { top: 64.5%; }
+    #out-p3-nom { top: 65.5%; }
+    #out-p3-par { top: 70.2%; left: 57%; }
+    #out-p3-tel { top: 74.8%; left: 53%; }
+  </style>
+</head>
+<body>
+
+  <div class="formulario">
+    <h2>Datos de la Credencial</h2>
+    <form id="credencialForm">
+      <h3>Datos del Alumno (Frente)</h3>
+      <div class="grupo"><label>Fotografía Alumno:</label><input type="file" id="in-foto-alumno" accept="image/*"></div>
+      <div class="grupo"><label>Nombre Completo:</label><input type="text" id="in-nombre" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Dirección:</label><input type="text" id="in-direccion" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Teléfono:</label><input type="tel" id="in-telefono" oninput="actualizarTexto()"></div>
+
+      <h3>Persona Autorizada 1</h3>
+      <div class="grupo"><label>Fotografía:</label><input type="file" id="in-p1-foto" accept="image/*"></div>
+      <div class="grupo"><label>Nombre:</label><input type="text" id="in-p1-nom" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Parentesco:</label><input type="text" id="in-p1-par" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Teléfono:</label><input type="tel" id="in-p1-tel" oninput="actualizarTexto()"></div>
+
+      <h3>Persona Autorizada 2</h3>
+      <div class="grupo"><label>Fotografía:</label><input type="file" id="in-p2-foto" accept="image/*"></div>
+      <div class="grupo"><label>Nombre:</label><input type="text" id="in-p2-nom" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Parentesco:</label><input type="text" id="in-p2-par" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Teléfono:</label><input type="tel" id="in-p2-tel" oninput="actualizarTexto()"></div>
+
+      <h3>Persona Autorizada 3</h3>
+      <div class="grupo"><label>Fotografía:</label><input type="file" id="in-p3-foto" accept="image/*"></div>
+      <div class="grupo"><label>Nombre:</label><input type="text" id="in-p3-nom" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Parentesco:</label><input type="text" id="in-p3-par" oninput="actualizarTexto()"></div>
+      <div class="grupo"><label>Teléfono:</label><input type="tel" id="in-p3-tel" oninput="actualizarTexto()"></div>
+
+      <button type="submit" id="btn-guardar">Guardar en Google Sheets</button>
+      <button type="button" class="btn-descargar" onclick="descargarCredenciales()">Descargar Imágenes (PNG)</button>
+    </form>
+  </div>
+  <div class="vista-previa">
+    <!-- FRENTE -->
+    <div class="credencial" id="card-frente">
+      <img id="out-foto-alumno" class="foto-alumno" src="" alt="">
+      <div id="out-nombre" class="texto-frente"></div>
+      <div id="out-direccion" class="texto-frente"></div>
+      <div id="out-telefono" class="texto-frente"></div>
+    </div>
+
+    <!-- REVERSO -->
+    <div class="credencial" id="card-reverso">
+      <img id="out-p1-foto" class="foto-autorizado" src="" alt="">
+      <div id="out-p1-nom" class="texto-autorizado"></div>
+      <div id="out-p1-par" class="texto-autorizado"></div>
+      <div id="out-p1-tel" class="texto-autorizado"></div>
+
+      <img id="out-p2-foto" class="foto-autorizado" src="" alt="">
+      <div id="out-p2-nom" class="texto-autorizado"></div>
+      <div id="out-p2-par" class="texto-autorizado"></div>
+      <div id="out-p2-tel" class="texto-autorizado"></div>
+
+      <img id="out-p3-foto" class="foto-autorizado" src="" alt="">
+      <div id="out-p3-nom" class="texto-autorizado"></div>
+      <div id="out-p3-par" class="texto-autorizado"></div>
+      <div id="out-p3-tel" class="texto-autorizado"></div>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-uw40EfIq5BxjXsWJzQ45DXgicRkdf1Kftag5XX-MtBJw9QdCCKOffzcNPG72ipUP/exec";
+    let base64Images = { alumno: "", p1: "", p2: "", p3: "" };
+
+    function actualizarTexto() {
+      document.getElementById('out-nombre').innerText = document.getElementById('in-nombre').value;
+      document.getElementById('out-direccion').innerText = document.getElementById('in-direccion').value;
+      document.getElementById('out-telefono').innerText = document.getElementById('in-telefono').value;
+
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`out-p${i}-nom`).innerText = document.getElementById(`in-p${i}-nom`).value;
+        document.getElementById(`out-p${i}-par`).innerText = document.getElementById(`in-p${i}-par`).value;
+        document.getElementById(`out-p${i}-tel`).innerText = document.getElementById(`in-p${i}-tel`).value;
+      }
+    }
+
+    function configurarImagen(inputId, imgId, key) {
+      document.getElementById(inputId).addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById(imgId).src = event.target.result;
+          base64Images[key] = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    configurarImagen('in-foto-alumno', 'out-foto-alumno', 'alumno');
+    configurarImagen('in-p1-foto', 'out-p1-foto', 'p1');
+    configurarImagen('in-p2-foto', 'out-p2-foto', 'p2');
+    configurarImagen('in-p3-foto', 'out-p3-foto', 'p3');
+
+    document.getElementById('credencialForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-guardar');
+      btn.innerText = "Guardando...";
+      btn.disabled = true;
+
+      const payload = {
+        nombre: document.getElementById('in-nombre').value,
+        direccion: document.getElementById('in-direccion').value,
+        telefono: document.getElementById('in-telefono').value,
+        fotoAlumno: base64Images.alumno,
+        p1_nombre: document.getElementById('in-p1-nom').value,
+        p1_parentesco: document.getElementById('in-p1-par').value,
+        p1_tel: document.getElementById('in-p1-tel').value,
+        p1_foto: base64Images.p1,
+        p2_nombre: document.getElementById('in-p2-nom').value,
+        p2_parentesco: document.getElementById('in-p2-par').value,
+        p2_tel: document.getElementById('in-p2-tel').value,
+        p2_foto: base64Images.p2,
+        p3_nombre: document.getElementById('in-p3-nom').value,
+        p3_parentesco: document.getElementById('in-p3-par').value,
+        p3_tel: document.getElementById('in-p3-tel').value,
+        p3_foto: base64Images.p3
+      };
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      })
+      .then(res => alert("¡Datos y fotos guardados en Google Sheets!"))
+      .catch(err => alert("Error al guardar: " + err))
+      .finally(() => { btn.innerText = "Guardar en Google Sheets"; btn.disabled = false; });
+    });
+
+    function descargarCredenciales() {
+      html2canvas(document.getElementById('card-frente'), { scale: 2 }).then(canvas => {
+        let link = document.createElement('a');
+        link.download = 'credencial-frente.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+      html2canvas(document.getElementById('card-reverso'), { scale: 2 }).then(canvas => {
+        let link = document.createElement('a');
+        link.download = 'credencial-reverso.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>
